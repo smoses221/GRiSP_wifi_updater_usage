@@ -15,8 +15,8 @@ FLEET    = escript scripts/grisp_fleet.escript $(COOKIE)
 
 .PHONY: release bump pack push reboot validate info
 
-# Bump the patch version, build the update package and push it to all boards
-release: bump pack push
+# Bump the patch version, build the update package, push it and reboot the boards
+release: bump pack push reboot
 
 # Increment the last version digit in both the .app.src and rebar.config
 bump:
