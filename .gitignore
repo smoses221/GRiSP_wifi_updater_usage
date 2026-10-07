@@ -19,3 +19,4 @@ rebar3.crashdump
 # GRiSP
 _grisp
 releases
+grisp/default/common/deploy/files/wpa_supplicant.conf
