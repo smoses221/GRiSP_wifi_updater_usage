@@ -73,3 +73,5 @@ erl -sname dev -setcookie grisp -remsh 'GRiSP_wifi_updater_test@grisp-001024'
 ```sh
 rebar3 grisp deploy
 ```
+
+Made by JL
