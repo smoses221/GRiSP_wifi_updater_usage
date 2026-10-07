@@ -1,0 +1,16 @@
+{application, GRiSP_wifi_updater_test, [
+    {description, "A GRiSP application"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {mod, {GRiSP_wifi_updater_test, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        grisp
+    ]},
+    {env,[]},
+    {modules, []},
+
+    {licenses, ["Apache 2.0"]},
+    {links, []}
+]}.
