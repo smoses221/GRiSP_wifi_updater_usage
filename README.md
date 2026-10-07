@@ -26,6 +26,25 @@ A new update is refused while the running version is not validated
   from eMMC. For the first install, deploy to an SD card, run one update, then
   remove the SD card: a board always boots from an inserted SD card.
 
+## The raw instructions
+```erlang
+===> Instructions to update GRiSP2 software on the board with grisp_updater:
+     NOTE: the software running on the board MUST run grisp_updater by adding the grisp_updater_grisp2 dependency.
+    - Unpack the software update package in some local directory:
+        $ mkdir -p releases/GRiSP_wifi_updater_test/0.2.0
+        $ tar -C releases/GRiSP_wifi_updater_test/0.2.0 -xvf _grisp/update/grisp2.GRiSP_wifi_updater_test.0.2.0.tar
+    - Start a local HTTP server to serve the package:
+        $ http-server ./releases -p 8000
+    - Open a serial console to the GRiSP board:
+        $ screen /dev/ttyUSB1 115200
+    - On the GRiSP2 console, start the update process:
+        $ grisp_updater:update(<<"http://192.168.129.88:8000/GRiSP_wifi_updater_test/0.2.0">>).
+    - Reset the GRiSP2 board using the onboard reset button.
+    - Validate the new software version on the GRiSP2 console:
+        $ grisp_updater:validate().
+```
+These are transform to make commands which do all of this automatically.
+
 ## Commands
 
 | Command         | What it does                                                              |

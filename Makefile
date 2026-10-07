@@ -22,7 +22,7 @@ release: bump pack push reboot
 bump:
 	@old=$(VERSION); new=$${old%.*}.$$(( $${old##*.} + 1 )); \
 	sed -i "s/{vsn, *\"$$old\"}/{vsn, \"$$new\"}/" $(APP_SRC); \
-	sed -i "s/{'$(APP)', *\"$$old\"}/{'$(APP)', \"$$new\"}/" rebar.config; \
+	sed -i "s/\({release, *{[^,]*, *\)\"$$old\"/\1\"$$new\"/" rebar.config; \
 	echo "Version $$old -> $$new"; \
 	grep -q "\"$$new\"" rebar.config || { echo "rebar.config not updated"; exit 1; }
 

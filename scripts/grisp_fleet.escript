@@ -42,10 +42,10 @@ call(Node, "reboot", []) ->
 call(Node, "validate", []) ->
     rpc:call(Node, grisp_updater, validate, [], 10000);
 call(Node, "info", []) ->
-    Vsns = rpc:call(Node, application, which_applications, [], 10000),
+    % The running release {Name, Version}, from the board's boot script
+    Release = rpc:call(Node, init, script_id, [], 10000),
     Info = rpc:call(Node, grisp_updater, info, [], 10000),
-    App = [V || {'GRiSP_wifi_updater_test', _, V} <- Vsns],
-    {ok, #{version => App, updater => Info}}.
+    {ok, #{release => Release, updater => Info}}.
 
 report(Node, R) when R =:= ok; R =:= true ->
     log(Node, "OK", []), true;
