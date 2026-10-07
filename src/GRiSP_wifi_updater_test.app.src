@@ -1,14 +1,17 @@
-{application, GRiSP_wifi_updater_test, [
+{application, 'GRiSP_wifi_updater_test', [
     {description, "A GRiSP application"},
     {vsn, "0.1.0"},
     {registered, []},
-    {mod, {GRiSP_wifi_updater_test, []}},
+    {mod, {'GRiSP_wifi_updater_test', []}},
     {applications, [
         kernel,
         stdlib,
-        grisp
+        grisp,
+        grisp_updater_grisp2
     ]},
-    {env,[]},
+    {env,[
+        {led_color, red}
+    ]},
     {modules, []},
 
     {licenses, ["Apache 2.0"]},

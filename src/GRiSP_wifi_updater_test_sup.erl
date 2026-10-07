@@ -1,6 +1,6 @@
 % @private
 % @doc GRiSP_wifi_updater_test top level supervisor.
--module(GRiSP_wifi_updater_test_sup).
+-module('GRiSP_wifi_updater_test_sup').
 
 -behavior(supervisor).
 
