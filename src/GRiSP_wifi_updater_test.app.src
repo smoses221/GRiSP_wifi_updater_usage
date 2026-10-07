@@ -1,6 +1,6 @@
 {application, 'GRiSP_wifi_updater_test', [
     {description, "A GRiSP application"},
-    {vsn, "0.1.0"},
+    {vsn, "0.2.0"},
     {registered, []},
     {mod, {'GRiSP_wifi_updater_test', []}},
     {applications, [
@@ -10,7 +10,7 @@
         grisp_updater_grisp2
     ]},
     {env,[
-        {led_color, red}
+        {led_color, green}
     ]},
     {modules, []},
 
