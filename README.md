@@ -81,10 +81,11 @@ Override any of these on the command line, e.g. `make push BOARDS="grisp-001024"
 
 ## Remote shell
 
-The node name is case-sensitive and must be quoted; the cookie is `grisp`:
+Nodes are named `board@<hostname>` (`-sname board` in `grisp.ini.mustache`, the
+hostname is `grisp-` + the board serial); the cookie is `grisp`:
 
 ```sh
-erl -sname dev -setcookie grisp -remsh 'GRiSP_wifi_updater_test@grisp-001024'
+erl -sname dev -setcookie grisp -remsh board@grisp-001024
 ```
 
 ## Manual deploy to SD card
