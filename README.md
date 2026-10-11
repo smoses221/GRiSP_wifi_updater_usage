@@ -94,4 +94,87 @@ erl -sname dev -setcookie grisp -remsh board@grisp-001024
 rebar3 grisp deploy
 ```
 
+## Using this in another project
+
+Replace `myapp` below with your application name.
+
+**1. Copy the tooling** into the project root:
+
+```sh
+cp Makefile <project>/
+mkdir -p <project>/scripts && cp scripts/grisp_fleet.escript <project>/scripts/
+echo "releases" >> <project>/.gitignore
+```
+
+**2. Edit the top of the `Makefile`:** set `APP := myapp`, and adjust
+`BOARDS` and `HOST_IP` if needed. `APP` is used both as the app name
+(`src/$(APP).app.src`) and as the release name.
+
+**3. `rebar.config`:** add the dependency, and make the release name and
+version match the app (same name as `APP`, same version as `{vsn, ...}` in the
+`.app.src`, or `make bump` stops with `rebar.config not updated`):
+
+```erlang
+{deps, [
+    grisp,
+    grisp_updater_grisp2,
+    ...
+]}.
+
+{relx, [
+    {release, {myapp, "0.1.0"}, [{epmd, none}, myapp]}
+]}.
+```
+
+**4. `src/myapp.app.src`:** add `grisp_updater_grisp2` to `applications`:
+
+```erlang
+{applications, [kernel, stdlib, grisp, grisp_updater_grisp2]},
+```
+
+**5. `config/sys.config`:** add these two sections (the file must end with a `.`):
+
+```erlang
+[
+    {grisp_updater, [
+        {system, {grisp_updater_grisp2, #{}}},
+        {sources, [
+            {grisp_updater_tarball, #{}},
+            {grisp_updater_http, #{backend => {grisp_updater_grisp2, #{}}}}
+        ]}
+    ]},
+    {grisp_cryptoauth, [
+        {tls_use_client_certificate, false},
+        {tls_verify, verify_none}
+    ]}
+].
+```
+
+**6. `grisp/grisp2/common/deploy/files/grisp.ini.mustache`:** copy it from this
+project, or make sure the `args` line contains `-sname board -setcookie grisp`
+(they must match `NODE` and `COOKIE` in the `Makefile`). Keep only the
+`.mustache` version of this file.
+
+**7. Custom Erlang build only:** if `rebar.config` has a `{build, [{toolchain, ...}]}`
+entry, rebuild Erlang so it includes the `grisp_cryptoauth` NIF, otherwise the
+board crashes at boot with `grisp_cryptoauth_drv: 'file not found'`:
+
+```sh
+rebar3 grisp build
+```
+
+**8. First install** (the board must end up running from eMMC):
+
+```sh
+rebar3 grisp deploy   # to the SD card, then boot the board from it
+make pack push        # writes the eMMC
+# remove the SD card, press the reset button
+make validate
+```
+
+From then on, use `make release`, `make info` and `make validate`.
+
+If the boards are still running a version with another node name, pass it
+once: `make release NODE=<old name>`.
+
 Made by JL
